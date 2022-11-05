@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<body id = "body" style = overflow:"hidden";>
+  <script>
+    var list1 = [];
+    var row1 = [];
+    var row2 = [];
+    var a = [];
+    var b = [];
+    var d = [];
+    var row = [];
+    var cell = [];
+    var boxes = [[]];
+    var boxenumber =[];
+    var time = [];
+    var teacher = [];
+    var allboxes = new Array();
+    var word = "";
+    var word1 = "";
+    var table = document.createElement("table");
+    var unwantedtech = [];
+    var unwantedtimes = [];
+    var unwanted = parseInt({{unwanted}});
+    window.onbeforeunload = function() {
+      return "An error may be occured. please try again";
+    };
+    {% for i in range(unwanted) %}
+    unwantedtech.push(String("{{unwantedtech[i]}}"));
+    unwantedtimes.push(String("{{unwantedtimes[i]}}"));
+    {% endfor %}
+    table.id = "table";
+    var first = table.insertRow(0);
+    var cell1 = first.insertCell(0);
+    width = String(width);
+    numbers = parseInt({{numbers}});
+    number = parseInt({{number}});
+    var width = 100 + 100 * numbers;
+    table.style.width = width + "px";
+    pixels = table.clientWidth;
+    pixels = pixels/(numbers+1);
+    pixels = String(pixels) + "px";
+    cell1.innerHTML = "    ";
+    cell1.style.width = "200px";
+    {%for x in range(numbers)%}
+    row1.push(String("{{row1[x]}}"));
+    {%endfor%}
+    {%for x in range(number)%}
+    row2.push(String("{{row[x]}}"));
+    {%endfor%}
+    for (i = 0;i <number;i++){
+        row2[i] = row2[i].substring(6,row2[i].length-6);
+        row[i] = table.insertRow(i+1);
+    }
+    for (i = 0;i < unwanted;i++){
+        unwantedtech[i] = unwantedtech[i].substring(6,unwantedtech[i].length-6);
+        unwantedtimes[i] = unwantedtimes[i].substring(6,unwantedtimes[i].length-6);
+    }
+
+    for (i = 0;i <numbers;i++){
+        row1[i] = row1[i].substring(6,row1[i].length-6);
+
+    }
+    for(i = 0; i < numbers; i++){
+      var cell2 = first.insertCell(i + 1);
+      cell2.innerHTML = row1[i];
+      cell2.style.width = pixels;
+      cell.push(cell2);
+    }
+    var u = 1;
+    for(i = 0; i < number; i++){
+      var cell3 = row[i].insertCell(0);
+      cell3.innerHTML = row2[i];
+      cell3.name = cell3.innerHTML;
+      cell3.style.width = "40px"
+      var boxenumber =[];
+      for(x = 1; x <= numbers; x++){
+        var checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.id = String(u);
+        u = u + 1
+        console.log(checkbox.id)
+        boxenumber.push(checkbox);
+        allboxes.push(checkbox);
+        var cell4 = row[i].insertCell(x)
+        cell4.appendChild(checkbox);
+      }
+      boxes.push(boxenumber);
+    }
+    console.log(allboxes);
+    console.log(boxes);
+    var trial = document.createElement('p')
+    for(i = 0; i < boxes; i++){
+    console.log(boxes[i]);
+  }
+  for(i = 0; i < unwanted ; i++){
+    var notteacher = row2.indexOf(unwantedtech[i]);
+    var nottime = row1.indexOf(unwantedtimes[i]);
+    var needed = ((notteacher)*numbers) + (nottime);
+    console.log(unwantedtech);
+    console.log((notteacher + 1) * numbers);
+    console.log(needed);
+    console.log(unwantedtimes[i]);
+    allboxes[needed].disabled = true;
+    }
+    function check(){
+      if (event.target.checked == true){
+        theid = parseInt(event.target.id);
+        thebox = allboxes[theid];
+        console.log(theid);
+        console.log(thebox);
+        for(i = 0; i <= number; i++){
+          for(x = 0; x <= numbers; x++){
+            if (boxes[i][x] == thebox){
+              theindex = i;
+            }
+          }
+        }
+         for(i = 0; i < number*numbers; i++){
+           if(theid - 1 != i && parseInt((theid - 1)/numbers) == parseInt(i/numbers)){
+             console.log(numbers)
+             allboxes[i].checked = false;
+             console.log(i);
+           }
+         }
+         while(theid + 1 > row1.length ){
+           theid = theid - numbers;
+         }
+         for(i = 0; i < numbers; i++){
+           if((theid + 1) / (i + 1) == 1){
+             word = row1[i];
+           }
+         }
+      word1 = String(document.getElementById("table").rows[theindex].cells[0].innerHTML);
+      console.log(theindex);
+      }
+    }
+    for(item = 0; item < boxes.length; item++){
+      i = 0;
+      for(n = 0;n < boxes[item].length; n++){
+        boxes[item][i].addEventListener("click", check);
+        i = i + 1;
+      }
+    }
+    console.log(number);
+    console.log(numbers);
+    var thebutton = document.createElement("button");
+    thebutton.innerHTML = "Save";
+    thebutton.addEventListener("click", save);
+    function save(){
+      for(r = 1; r <= number; r++){
+        for(x = 0; x < numbers; x++){
+          if(boxes[r][x].checked == true){
+            teacher.push(document.getElementById("table").rows[r].cells[0].innerHTML);
+            time.push(document.getElementById("table").rows[0].cells[x + 1].innerHTML);
+            for(i = 0 ; i < teacher.length; i++){
+              teacher[i].name = "teacher";
+            }
+            for(i = 0 ; i < time.length; i++){
+              teacher[i].name = "time";
+            }
+          }
+        }
+      }
+      var uniqueteachers = [];
+      var uniquetimes = [];
+      uniqueteachers = teacher;
+      uniquetimes = time;
+      console.log(uniqueteachers);
+      console.log(uniquetimes);
+      $.ajax({
+        url: '/files',
+        data:{uniqueteachers:uniqueteachers, uniquetimes:uniquetimes},
+        type:'POST',
+        })
+      }
+    var w = document.getElementById("body");
+    w.appendChild(trial);
+    w.appendChild(table);
+    w.appendChild(thebutton);
+    window.alert(row1);
+    window.alert(row2);
+    function y(){
+      var list1 = [];
+      list1.push("Hello");
+      list1.push("Hello4");
+      for (i = 0; i < 2; i++) {
+        var x = document.createElement("p");
+        var m = document.createTextNode(list1[i]);
+        x.appendChild(m);
+        w.appendChild(x);
+    }
+  }
+</script>
+</body>
+</html>

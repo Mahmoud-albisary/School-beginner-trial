@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+   <head>
+     <meta charset="utf-8">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/brython@3.8.9/brython.min.js">
+    </script>
+</head>
+     <link rel="stylesheet" href="{{url_for('static',filename='style/styles.css')}}">
+   </head>
+  <body onload="brython()">
+
+   <script type="text/python">
+   import javascript
+   from browser import document, html
+   list1 = []
+   row1 = []
+   row2 = []
+   a = []
+   b = []
+   d = []
+   numbers = int({{numbers}})
+   number = int({{number}})
+   {%for x in range(numbers)%}
+   row1.append(str("{{row1[x]}}"))
+   {%endfor%}
+   for x in range(int({{numbers}})):
+       item = row1[x]
+       row1[x] = item[6: -6]
+   {%for x in range(number)%}
+   row2.append(str("{{row[x]}}"))
+   {%endfor%}
+   for x in range(int({{number}})):
+       item = row2[x]
+       row2[x] = item[6: -6]
+   row = html.TABLE()
+   row.id = "mytable"
+   row <= html.TR((html.TD(" ")) + (html.TD(items)for items in row1))
+   u = 0
+   for m in range(number):
+       a = []
+       for j in range(numbers):
+           f = document.createElement("input", id = str(m))
+           f.type = "checkbox"
+           f.id = str(u)
+           u = u +1
+           a.append(f)
+       b.append(a)
+       d.extend(a)
+   l = document.createElement("button")
+   l.text = "Save"
+   r = True
+   k = (html.TR((html.TD(row2[items])) + (html.TD(b[items][i])for i in range(len(b[items])))) for items in range(len(b)))
+   def show(ev):
+       if ev.target.checked == True:
+           x = int(ev.target.id)
+           t = d[x]
+           for boxes in b:
+               for box in boxes:
+                   if box == t:
+                       g = b.index(boxes)
+           for items in range(len(d)):
+               if x != items and int(x/numbers) == int(items / numbers):
+                   d[items].checked = False
+           while x + 1 > len(row1) :
+               x = x - numbers
+           for item in range(0, numbers):
+               if (x + 1) / (item + 1) == 1:
+                   teacher = html.B(row1[item])
+           time = document.getElementById("mytable").rows[g + 1].cells[0].length
+           teachers = str(teacher)
+           times = str(time)
+           row <= teacher
+           row <= time
+
+   for item in range(len(b)):
+       i = 0
+       for n in range(len(b[item])):
+           b[item][i].bind("click", show)
+           i = i + 1
+   row <= k
+   javascript.py2js(k)
+   row.style = {"width" : "75%"}
+   document <= row
+   </script>
+   </body>
+</html>
